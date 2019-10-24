@@ -136,9 +136,16 @@ label {
 }
 
 .inline-form .input-group{
-display: inline-block;
-margin: 10px 5px;
+  display: inline-block;
+  margin: 10px 5px;
 }
+
 .input-group input {
-width: 100%;
+  width: 100%;
+}
+
+.error {
+  color: red;
+  font-size: .8em;
+  background-color: #FFFFFF;
 }
