@@ -13,6 +13,13 @@ For self-reference only ([source - realpython.com](http://realpython.com))
 - Flask-SQLAlchemy
 
 ### Notes to self
+###### Part 3
+- `form.errors` contains errors return from validator
+- `def flash_errors` @ `views.py` look really nice but is not used (it also introduce the use of flash()'s category parameter)
+- Added `unittest`
+- Use of `app.post` @ `test.py` to test route
+- the test `test_users_cannot_complete_tasks_that_are_not_created_by_them` is still failing
+
 ###### Part 2
 - DB move from sqlite to `SQLAlchemy` over sqlite, need of `Flask.g` removed as well
 - CSRF token `{{ form.csrf_token }}` add for new task form @ `tasks.html`
