@@ -1,6 +1,9 @@
-# project/test.py
+# project/test_users.py
+
+
 import os
 import unittest
+
 from views import app, db
 from _config import basedir
 from models import User
@@ -8,7 +11,7 @@ from models import User
 TEST_DB = 'test.db'
 
 
-class AllTests(unittest.TestCase):
+class UsersTests(unittest.TestCase):
 
     ############################
     #### setup and teardown ####
@@ -28,7 +31,10 @@ class AllTests(unittest.TestCase):
         db.session.remove()
         db.drop_all()
 
-    # Helper functions
+    ########################
+    #### helper methods ####
+    ########################
+
     def login(self, name, password):
         return self.app.post('/', data=dict(
             name=name, password=password), follow_redirects=True)
@@ -51,14 +57,13 @@ class AllTests(unittest.TestCase):
     def create_task(self):
         return self.app.post('add/', data=dict(
             name='Go to the bank',
-            due_date='10/08/2016',
+            due_date='02/05/2015',
             priority='1',
-            posted_date='10/08/2016',
+            posted_date='02/04/2015',
             status='1'
         ), follow_redirects=True)
 
-    # each test should start with 'test'
-    def test_user_setup(self):
+    def test_users_can_register(self):
         new_user = User("michael", "michael@mherman.org", "michaelherman")
         db.session.add(new_user)
         db.session.commit()
@@ -67,10 +72,10 @@ class AllTests(unittest.TestCase):
             t.name
         assert t.name == "michael"
 
-    def test_form_is_present(self):
+    def test_form_is_present_on_login_page(self):
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Please login to access your task list', response.data)
+        self.assertIn(b'Please sign in to access your task list', response.data)
 
     def test_users_cannot_login_unless_registered(self):
         response = self.login('foo', 'bar')
@@ -91,13 +96,13 @@ class AllTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Please register to access the task list.', response.data)
 
-    def test_user_registration(self):
+    def test_user_registeration(self):
         self.app.get('register/', follow_redirects=True)
         response = self.register(
             'Michael', 'michael@realpython.com', 'python', 'python')
         self.assertIn(b'Thanks for registering. Please login.', response.data)
 
-    def test_user_registration_error(self):
+    def test_user_registeration_error(self):
         self.app.get('register/', follow_redirects=True)
         self.register('Michael', 'michael@realpython.com', 'python', 'python')
         self.app.get('register/', follow_redirects=True)
@@ -119,48 +124,56 @@ class AllTests(unittest.TestCase):
         response = self.logout()
         self.assertNotIn(b'Goodbye!', response.data)
 
-    def test_logged_in_users_can_access_tasks_page(self):
-        self.register(
-            'Fletcher', 'fletcher@realpython.com', 'python101', 'python101'
+    def test_duplicate_user_registeration_throws_error(self):
+        self.register('Fletcher', 'fletcher@realpython.com', 'python101', 'python101')
+        response = self.register('Fletcher', 'fletcher@realpython.com', 'python101', 'python101')
+        self.assertIn(
+            b'That username and/or email already exist.',
+            response.data
         )
-        self.login('Fletcher', 'python101')
-        response = self.app.get('tasks/')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Add a new task:', response.data)
 
-    def test_not_logged_in_users_cannot_access_tasks_page(self):
-        response = self.app.get('tasks/', follow_redirects=True)
-        self.assertIn(b'You need to login first.', response.data)
-
-    def test_users_can_complete_tasks(self):
-        self.create_user('Michael', 'michael@realpython.com', 'python')
-        self.login('Michael', 'python')
-        self.app.get('tasks/', follow_redirects=True)
-        self.create_task()
-        response = self.app.get("complete/1/", follow_redirects=True)
-        self.assertIn(b'The task is complete. Nice.', response.data)
-
-    def test_users_can_delete_tasks(self):
-        self.create_user('Michael', 'michael@realpython.com', 'python')
-        self.login('Michael', 'python')
-        self.app.get('tasks/', follow_redirects=True)
-        self.create_task()
-        response = self.app.get("delete/1/", follow_redirects=True)
-        self.assertIn(b'The task was deleted.', response.data)
-
-    def test_users_cannot_complete_tasks_that_are_not_created_by_them(self):
-        self.create_user('Michael', 'michael@realpython.com', 'python')
-        self.login('Michael', 'python')
-        self.app.get('tasks/', follow_redirects=True)
-        self.create_task()
-        self.logout()
-        self.create_user('Fletcher', 'fletcher@realpython.com', 'python101')
-        self.login('Fletcher', 'python101')
-        self.app.get('tasks/', follow_redirects=True)
-        response = self.app.get("complete/1/", follow_redirects=True)
-        self.assertNotIn(
-            b'The task is complete. Nice.', response.data
+    def test_user_login_field_errors(self):
+        response = self.app.post(
+            '/',
+            data=dict(
+                name='',
+                password='python101',
+            ),
+            follow_redirects=True
         )
+        self.assertIn(b'This field is required.', response.data)
+
+    def test_string_representation_of_the_user_object(self):
+
+        db.session.add(
+            User(
+                "Johnny",
+                "john@doe.com",
+                "johnny"
+            )
+        )
+
+        db.session.commit()
+
+        users = db.session.query(User).all()
+        for user in users:
+            self.assertEqual(user.name, 'Johnny')
+
+    def test_default_user_role(self):
+
+        db.session.add(
+            User(
+                "Johnny",
+                "john@doe.com",
+                "johnny"
+            )
+        )
+
+        db.session.commit()
+
+        users = db.session.query(User).all()
+        for user in users:
+            self.assertEqual(user.role, 'user')
 
 
 if __name__ == "__main__":

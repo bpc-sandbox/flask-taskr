@@ -12,7 +12,19 @@ For self-reference only ([source - realpython.com](http://realpython.com))
 - Flask-WTF
 - Flask-SQLAlchemy
 
+### HTML/CSS Mats
+###### reference
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Element
+- https://cssvalues.com/
+
+###### learn
+- https://www.codecademy.com/learn/learn-html
+- [CSS game](http://flukeout.github.io/)
+
 ### Notes to self
+###### Part 4
+- Added `nose` test and `test coverage`
+
 ###### Part 3
 - `form.errors` contains errors return from validator
 - `def flash_errors` @ `views.py` look really nice but is not used (it also introduce the use of flash()'s category parameter)
