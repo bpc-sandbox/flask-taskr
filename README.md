@@ -22,6 +22,9 @@ For self-reference only ([source - realpython.com](http://realpython.com))
 - [CSS game](http://flukeout.github.io/)
 
 ### Notes to self
+###### Part 5
+- Refactor into `Blueprint`
+
 ###### Part 4
 - Added `nose` test and `test coverage`
 
