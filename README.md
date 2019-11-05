@@ -11,19 +11,27 @@ For self-reference only ([source - realpython.com](http://realpython.com))
 ### Flask add-on used
 - Flask-WTF
 - Flask-SQLAlchemy
+- coverage
+- nose
+- flask-bcrypt
 
 ### HTML/CSS Mats
-###### reference
+###### Reference
 - https://developer.mozilla.org/en-US/docs/Web/HTML/Element
 - https://cssvalues.com/
 
-###### learn
+###### Learn
 - https://www.codecademy.com/learn/learn-html
 - [CSS game](http://flukeout.github.io/)
+
+### Other reference
+- [Password storage](https://www.owasp.org/index.php/Secure_Coding_Cheat_Sheet#Password_Storage)
 
 ### Notes to self
 ###### Part 5
 - Refactor into `Blueprint`
+- Add password hashing
+- Add customer error page
 
 ###### Part 4
 - Added `nose` test and `test coverage`
@@ -41,7 +49,7 @@ For self-reference only ([source - realpython.com](http://realpython.com))
 
 ###### Part 1
 - Best practice of `Flask.g` for database within session ([ref](https://stackoverflow.com/questions/15083967/when-should-flask-g-be-used))
-- Config with `module`
+- Config with `module` (Instance folder for secret hanlding - [ref](https://exploreflask.com/en/latest/configuration.html))
 - `Typed` dynamic route
 - `Form` render with `Flask-WTF`
 - Use of function `flash` and template `{% for message in get_flashed_messages() %}`

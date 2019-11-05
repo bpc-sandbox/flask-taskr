@@ -6,3 +6,4 @@ __pycache__
 project/_config.py
 *.db
 .coverage
+error.log
