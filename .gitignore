@@ -3,7 +3,7 @@ venv
 *.pyc
 __pycache__
 *.DS_Store
-project/_config.py
+#project/_config.py
 *.db
 .coverage
 error.log

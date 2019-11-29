@@ -2,6 +2,7 @@
 from datetime import date
 from project import db, bcrypt
 from project.models import Task, User
+import abc
 
 # create the database and the db table
 db.create_all()
