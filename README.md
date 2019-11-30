@@ -28,6 +28,11 @@ For self-reference only ([source - realpython.com](http://realpython.com))
 - [Password storage](https://www.owasp.org/index.php/Secure_Coding_Cheat_Sheet#Password_Storage)
 
 ### Notes to self
+
+###### Part 8
+- Added RESTful API
+- Use of `make_response` to override error code (Can also modify headers if needed)
+
 ###### Part 5
 - Refactor into `Blueprint`
 - Add password hashing
